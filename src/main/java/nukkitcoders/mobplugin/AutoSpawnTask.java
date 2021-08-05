@@ -16,6 +16,7 @@ import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.swimming.*;
 import nukkitcoders.mobplugin.entities.animal.walking.*;
 import nukkitcoders.mobplugin.entities.autospawn.IEntitySpawner;
+import nukkitcoders.mobplugin.entities.commands.Pets;
 import nukkitcoders.mobplugin.entities.monster.flying.Blaze;
 import nukkitcoders.mobplugin.entities.monster.flying.Ghast;
 import nukkitcoders.mobplugin.entities.monster.jumping.MagmaCube;
@@ -190,6 +191,7 @@ public class AutoSpawnTask implements Runnable {
                 entity = null;
             }
         }
+
         return entity;
     }
 

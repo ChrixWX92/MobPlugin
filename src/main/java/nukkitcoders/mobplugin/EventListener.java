@@ -14,6 +14,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.block.BlockPlaceEvent;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
+import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.event.entity.ProjectileHitEvent;
 import cn.nukkit.event.player.PlayerDeathEvent;
@@ -30,6 +31,7 @@ import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.SimpleAxisAlignedBB;
 import cn.nukkit.nbt.tag.CompoundTag;
+import cn.nukkit.nbt.tag.StringTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.PlayerInputPacket;
 import cn.nukkit.network.protocol.TextPacket;
@@ -54,8 +56,12 @@ import nukkitcoders.mobplugin.utils.Utils;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
+import static idk.plugin.npc.NPC.idRecipientList;
+import static idk.plugin.npc.NPC.npcEditorsList;
 import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
 
 public class EventListener implements Listener {
@@ -392,31 +398,93 @@ public class EventListener implements Listener {
             }
         }
     }
-    
-    @EventHandler(ignoreCancelled = true)
-    public void EntityDamageByEntityEvent(EntityDamageByEntityEvent ev) {
-        if (!MobPlugin.getInstance().config.checkTamedEntityAttack) {
-            return;
-        }
-        
-        if (ev.getEntity() instanceof Player)  {
-            for (Entity entity : ev.getEntity().getLevel().getNearbyEntities(ev.getEntity().getBoundingBox().grow(17, 17, 17), ev.getEntity())) {
-                if (entity instanceof Wolf) {
-                    if (((Wolf) entity).hasOwner()) {
-                        ((Wolf) entity).isAngryTo = ev.getDamager().getId();
-                        ((Wolf) entity).setAngry(true);
+
+    /* Referential NPC damage handling:
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onDamage(EntityDamageEvent event) {
+        Entity entity = event.getEntity();
+        CompoundTag namedTag = entity.namedTag;
+        entName = entity.getName();
+        entType = entity.getClass().toString();
+
+        if (namedTag.getBoolean("npc")) {
+            event.setCancelled();
+
+            if (event instanceof EntityDamageByEntityEvent) {
+                Entity damager = ((EntityDamageByEntityEvent) event).getDamager();
+
+                if (damager instanceof Player) {
+                    Player player = (Player) damager;
+                    UUID playerUniqueId = player.getUniqueId();
+
+                    if (idRecipientList.contains(playerUniqueId)) {
+                        player.sendMessage("§aThe ID from that entity is " + entity.getId());
+                        idRecipientList.remove(playerUniqueId);
+                        return;
                     }
+
+                    if (npcEditorsList.contains(playerUniqueId)) {
+                        this.sendNPCEditingForm(player, entity);
+                        npcEditorsList.remove(playerUniqueId);
+                        player.sendMessage("§aChanges applied!");
+                        return;
+                    }
+
+                    List<StringTag> commands = namedTag.getList("Commands", StringTag.class).getAll();
+                    List<StringTag> playerCommands = namedTag.getList("PlayerCommands", StringTag.class).getAll();
+
+                    commands.forEach(commandTag -> {
+                        String command = commandTag.data;
+
+                        if (!command.replaceAll(" ", "").equals("")) {
+                            Server.getInstance().dispatchCommand(Server.getInstance().getConsoleSender(), command.replaceAll("%p", "\"" + player.getName() + "\""));
+                        }
+                    });
+
+                    playerCommands.forEach(commandTag -> {
+                        String command = commandTag.data;
+
+                        if (!command.replaceAll(" ", "").equals("")) {
+                            Server.getInstance().dispatchCommand(player, command.replaceAll("%p", "\"" + player.getName() + "\""));
+                        }
+                    });
                 }
             }
-        } else if (ev.getDamager() instanceof Player) {
-            for (Entity entity : ev.getDamager().getLevel().getNearbyEntities(ev.getDamager().getBoundingBox().grow(17, 17, 17), ev.getDamager())) {
-                if (entity.getId() == ev.getEntity().getId()) return;
-                
-                if (entity instanceof Wolf) {
-                    if (((Wolf) entity).hasOwner()) {
-                        if (((Wolf) entity).getOwner().equals(ev.getDamager())) {
-                            ((Wolf) entity).isAngryTo = ev.getEntity().getId();
+        }
+    }
+    */
+
+
+    @EventHandler
+    public void EntityDamageByEntityEvent(EntityDamageByEntityEvent ev) {
+
+        if (ev.getEntity().namedTag.getBoolean("Invulnerable")) {
+            ev.setCancelled();
+        } else {
+
+            if (!MobPlugin.getInstance().config.checkTamedEntityAttack) {
+                return;
+            }
+
+            if (ev.getEntity() instanceof Player) {
+                for (Entity entity : ev.getEntity().getLevel().getNearbyEntities(ev.getEntity().getBoundingBox().grow(17, 17, 17), ev.getEntity())) {
+                    if (entity instanceof Wolf) {
+                        if (((Wolf) entity).hasOwner()) {
+                            ((Wolf) entity).isAngryTo = ev.getDamager().getId();
                             ((Wolf) entity).setAngry(true);
+                        }
+                    }
+                }
+            } else if (ev.getDamager() instanceof Player) {
+                for (Entity entity : ev.getDamager().getLevel().getNearbyEntities(ev.getDamager().getBoundingBox().grow(17, 17, 17), ev.getDamager())) {
+                    if (entity.getId() == ev.getEntity().getId()) return;
+
+                    if (entity instanceof Wolf) {
+                        if (((Wolf) entity).hasOwner()) {
+                            if (((Wolf) entity).getOwner().equals(ev.getDamager())) {
+                                ((Wolf) entity).isAngryTo = ev.getEntity().getId();
+                                ((Wolf) entity).setAngry(true);
+                            }
                         }
                     }
                 }

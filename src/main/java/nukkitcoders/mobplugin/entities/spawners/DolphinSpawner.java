@@ -26,6 +26,7 @@ public class DolphinSpawner extends AbstractEntitySpawner {
         } else if (MobPlugin.isAnimalSpawningAllowedByTime(level)) {
             int b = level.getBlockIdAt((int) pos.x, (int) (pos.y -1), (int) pos.z);
             if (b == Block.WATER || b == Block.STILL_WATER) {
+
                 this.spawnTask.createEntity("Dolphin", pos.add(0, -1, 0));
             }
         }

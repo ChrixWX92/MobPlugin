@@ -77,27 +77,27 @@ public class Config {
                 pluginConfig.set("autospawn.piglin", 0);
                 pluginConfig.set("other.check-tamed-entity-attack", true);
             } else {
-                plugin.getLogger().warning("MobPlugin's config file is outdated. Please delete the old config.");
-                plugin.getLogger().error("Config error. The plugin will be disabled.");
-                plugin.getServer().getPluginManager().disablePlugin(plugin);
-                return false;
+                //plugin.getLogger().warning("MobPlugin's config file is outdated. Please delete the old config.");
+                //plugin.getLogger().error("Config error. The plugin will be disabled.");
+                //plugin.getServer().getPluginManager().disablePlugin(plugin);
+                return true;
             }
 
-            pluginConfig.set("config-version", ver);
-            pluginConfig.save();
-            plugin.getLogger().notice("Config file updated to version " + ver);
+            //pluginConfig.set("config-version", ver);
+            //pluginConfig.save();
+            //plugin.getLogger().notice("Config file updated to version " + ver);
         }
 
-        spawnDelay = pluginConfig.getInt("entities.autospawn-ticks") >> 1;
-        noXpOrbs = pluginConfig.getBoolean("other.use-no-xp-orbs");
-        noSpawnEggWasting = pluginConfig.getBoolean("other.do-not-waste-spawn-eggs");
-        despawnTicks = pluginConfig.getInt("entities.despawn-ticks");
-        spawnerRange = pluginConfig.getInt("other.spawner-spawn-range");
-        killOnDespawn = pluginConfig.getBoolean("other.kill-mobs-on-despawn");
-        endEndermanSpawnRate = pluginConfig.getInt("other.end-enderman-spawning");
-        spawnersEnabled = pluginConfig.getBoolean("other.spawners-enabled");
-        checkTamedEntityAttack = pluginConfig.getBoolean("other.check-tamed-entity-attack");
-        creeperExplodeBlocks = pluginConfig.getBoolean("other.creeper-explode-blocks");
+        spawnDelay = 0;// pluginConfig.getInt("entities.autospawn-ticks") >> 1; TODO: Must be set to however many ticks entities spawn if spontaneous spawning is ever required (recommend 200)
+        noXpOrbs = false;//pluginConfig.getBoolean("other.use-no-xp-orbs"); TODO: Want no XP to be gained? Toggle it here.
+        noSpawnEggWasting = false;//pluginConfig.getBoolean("other.do-not-waste-spawn-eggs"); TODO: Want infinitely mob-spawning dispensers? Enable this.
+        despawnTicks = 0;//pluginConfig.getInt("entities.despawn-ticks"); TODO: Unless you'd like pets to disappear spontaneously, keep this as is.
+        spawnerRange = 8;//pluginConfig.getInt("other.spawner-spawn-range"); TODO: Block radius, in case we ever need it.
+        killOnDespawn = false;//pluginConfig.getBoolean("other.kill-mobs-on-despawn"); TODO: Don't know why you'd ever want this.
+        endEndermanSpawnRate = 10;//pluginConfig.getInt("other.end-enderman-spawning"); TODO: Custom spawn rate for End biome.
+        spawnersEnabled = true;//pluginConfig.getBoolean("other.spawners-enabled"); TODO: Have fun!
+        checkTamedEntityAttack = false;//pluginConfig.getBoolean("other.check-tamed-entity-attack"); TODO: Pets are invulnerable anyway, but this turns off agro all the same.
+        creeperExplodeBlocks = false;//pluginConfig.getBoolean("other.creeper-explode-blocks"); TODO: Turns off Creepers' griefing.
         return true;
     }
 }

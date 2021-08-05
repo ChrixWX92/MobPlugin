@@ -1,6 +1,7 @@
 package nukkitcoders.mobplugin;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -10,6 +11,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.plugin.PluginManager;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
 import nukkitcoders.mobplugin.entities.animal.flying.Bee;
@@ -18,6 +20,7 @@ import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.swimming.*;
 import nukkitcoders.mobplugin.entities.animal.walking.*;
 import nukkitcoders.mobplugin.entities.block.BlockEntitySpawner;
+import nukkitcoders.mobplugin.entities.commands.Pets;
 import nukkitcoders.mobplugin.entities.monster.flying.*;
 import nukkitcoders.mobplugin.entities.monster.jumping.MagmaCube;
 import nukkitcoders.mobplugin.entities.monster.jumping.Slime;
@@ -26,6 +29,8 @@ import nukkitcoders.mobplugin.entities.monster.swimming.Guardian;
 import nukkitcoders.mobplugin.entities.monster.walking.*;
 import nukkitcoders.mobplugin.entities.projectile.*;
 import nukkitcoders.mobplugin.utils.Utils;
+
+import idk.plugin.npc.commands.NpcCommand;
 
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz (kniffo80)</a>
@@ -62,8 +67,17 @@ public class MobPlugin extends PluginBase implements Listener {
             return;
         }
 
+        if(this.getServer().getPluginManager().getPlugin("FormAPI") == null) {
+            getLogger().alert("§cRequired component of NPC plugin not found (FormAPI Plugin)");
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
         this.registerEntities();
+        this.registerCommands();
+
+        getServer().getCommandMap().register("talk", new Pets());
 
         if (config.spawnDelay > 0) {
             this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), config.spawnDelay, config.spawnDelay);
@@ -283,5 +297,8 @@ public class MobPlugin extends PluginBase implements Listener {
     public static boolean shouldMobBurn(Level level, BaseEntity entity) {
         int time = level.getTime() % Level.TIME_FULL;
         return !entity.isOnFire() && !level.isRaining() && !entity.isBaby() && (time < 12567 || time > 23450) && !Utils.entityInsideWaterFast(entity) && level.canBlockSeeSky(entity);
+    }
+    private void registerCommands() {
+        Server.getInstance().getCommandMap().register("", new NpcCommand());
     }
 }
