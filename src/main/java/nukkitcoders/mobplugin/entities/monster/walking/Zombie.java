@@ -11,6 +11,7 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemShovelIron;
 import cn.nukkit.item.ItemSwordIron;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.NBTIO;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -18,6 +19,7 @@ import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.network.protocol.MobArmorEquipmentPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
 import nukkitcoders.mobplugin.MobPlugin;
+import nukkitcoders.mobplugin.entities.GSPetData;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.route.WalkerRouteFinder;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -232,4 +234,9 @@ public class Zombie extends WalkingMonster implements EntityAgeable, EntitySmite
             this.namedTag.put("Item", NBTIO.putItemHelper(tool));
         }
     }
+    @Override
+    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+
+    @Override
+    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
 }

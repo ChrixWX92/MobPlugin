@@ -14,6 +14,7 @@ import cn.nukkit.math.Vector3;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.LevelSoundEventPacket;
 import cn.nukkit.network.protocol.MobEquipmentPacket;
+import nukkitcoders.mobplugin.entities.GSPetData;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -128,4 +129,10 @@ public class Pillager extends WalkingMonster {
     public int nearbyDistanceMultiplier() {
         return 20;
     }
+
+    @Override
+    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+
+    @Override
+    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
 }

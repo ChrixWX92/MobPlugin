@@ -6,9 +6,11 @@ import cn.nukkit.entity.EntityArthropod;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.potion.Effect;
+import nukkitcoders.mobplugin.entities.GSPetData;
 import nukkitcoders.mobplugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -98,4 +100,10 @@ public class CaveSpider extends Spider implements EntityArthropod {
     public String getName() {
         return this.hasCustomName() ? this.getNameTag() : "Cave Spider";
     }
+
+    @Override
+    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+
+    @Override
+    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
 }

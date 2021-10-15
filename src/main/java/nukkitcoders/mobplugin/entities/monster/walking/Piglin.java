@@ -8,8 +8,10 @@ import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemID;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import nukkitcoders.mobplugin.entities.GSPetData;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 
 import java.util.HashMap;
@@ -106,4 +108,10 @@ public class Piglin extends WalkingMonster {
         }
         return creature instanceof Player && (this.isAngry() || !isWearingGold((Player) creature)) && super.targetOption(creature, distance);
     }
+
+    @Override
+    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+
+    @Override
+    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
 }

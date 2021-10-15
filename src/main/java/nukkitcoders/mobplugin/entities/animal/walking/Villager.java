@@ -3,8 +3,10 @@ package nukkitcoders.mobplugin.entities.animal.walking;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.mob.EntityWitch;
 import cn.nukkit.event.entity.CreatureSpawnEvent;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import nukkitcoders.mobplugin.entities.GSPetData;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 
 import static cn.nukkit.entity.passive.EntityVillagerV1.PROFESSION_GENERIC;
@@ -98,4 +100,10 @@ public class Villager extends WalkingAnimal {
     public boolean canDespawn() {
         return false;
     }
+
+    @Override
+    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+
+    @Override
+    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
 }

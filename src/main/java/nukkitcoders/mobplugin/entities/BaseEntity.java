@@ -7,6 +7,7 @@ import cn.nukkit.entity.EntityCreature;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.Vector3;
@@ -45,6 +46,10 @@ public abstract class BaseEntity extends EntityCreature implements EntityAgeable
     public abstract Vector3 updateMove(int tickDiff);
 
     public abstract int getKillExperience();
+
+    public abstract int getCost();
+
+    public abstract Location getSpawnLoc();
 
     public boolean isFriendly() {
         return this.friendly;

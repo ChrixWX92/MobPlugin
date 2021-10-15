@@ -1,7 +1,9 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import nukkitcoders.mobplugin.entities.GSPetData;
 
 public class VillagerV2 extends Villager {
 
@@ -20,4 +22,10 @@ public class VillagerV2 extends Villager {
     public String getName() {
         return this.hasCustomName() ? this.getNameTag() : "Villager";
     }
+
+    @Override
+    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+
+    @Override
+    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
 }

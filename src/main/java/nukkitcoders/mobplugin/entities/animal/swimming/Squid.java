@@ -3,10 +3,12 @@ package nukkitcoders.mobplugin.entities.animal.swimming;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemDye;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.EntityEventPacket;
 import cn.nukkit.utils.DyeColor;
+import nukkitcoders.mobplugin.entities.GSPetData;
 import nukkitcoders.mobplugin.entities.animal.SwimmingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -64,4 +66,10 @@ public class Squid extends SwimmingAnimal {
         this.level.addChunkPacket(this.getChunkX() >> 4,this.getChunkZ() >> 4,pk0);
         return att;
     }
+
+    @Override
+    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+
+    @Override
+    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
 }

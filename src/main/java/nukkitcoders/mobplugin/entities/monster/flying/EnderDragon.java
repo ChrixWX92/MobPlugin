@@ -13,6 +13,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.network.protocol.AddEntityPacket;
 import cn.nukkit.network.protocol.DataPacket;
 import nukkitcoders.mobplugin.entities.Boss;
+import nukkitcoders.mobplugin.entities.GSPetData;
 import nukkitcoders.mobplugin.entities.monster.FlyingMonster;
 import nukkitcoders.mobplugin.entities.projectile.EntityEnderCharge;
 import nukkitcoders.mobplugin.utils.Utils;
@@ -135,4 +136,10 @@ public class EnderDragon extends FlyingMonster implements Boss {
 
         return super.entityBaseTick(tickDiff);
     }
+
+    @Override
+    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+
+    @Override
+    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
 }

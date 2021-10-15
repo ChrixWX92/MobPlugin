@@ -1,7 +1,9 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
+import nukkitcoders.mobplugin.entities.GSPetData;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
 import nukkitcoders.mobplugin.utils.Utils;
 
@@ -44,4 +46,10 @@ public class Panda extends WalkingAnimal {
     public int getKillExperience() {
         return this.isBaby() ? 0 : Utils.rand(1, 3);
     }
+
+    @Override
+    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+
+    @Override
+    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
 }
