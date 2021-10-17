@@ -222,6 +222,9 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void BlockPlaceEvent(BlockPlaceEvent ev) {
         Block block = ev.getBlock();
+        if (!MobPlugin.isEntityCreationAllowed(block.getLevel())) {
+            return;
+        }
         Player player = ev.getPlayer();
         Item item = ev.getItem();
         if (!isEntityCreationAllowed(block.getLevel())) {

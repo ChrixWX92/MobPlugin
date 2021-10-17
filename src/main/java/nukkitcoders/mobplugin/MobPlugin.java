@@ -47,15 +47,15 @@ public class MobPlugin extends PluginBase implements Listener {
 
     public Config config;
 
-    private static MobPlugin instance;
+    private static MobPlugin INSTANCE;
 
     public static MobPlugin getInstance() {
-        return instance;
+        return INSTANCE;
     }
 
     @Override
     public void onLoad() {
-        instance = this;
+        INSTANCE = this;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class MobPlugin extends PluginBase implements Listener {
         getServer().getCommandMap().register("talk", new Pets());
 
         if (config.spawnDelay > 0) {
-            this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this), config.spawnDelay, config.spawnDelay);
+            this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this, config.pluginConfig), config.spawnDelay, config.spawnDelay);
 
             if (!this.getServer().getPropertyBoolean("spawn-animals") || !this.getServer().getPropertyBoolean("spawn-mobs")) {
                 this.getServer().getLogger().notice("Disabling mob/animal spawning from server.properties does not disable spawning in MobPlugin");
@@ -310,5 +310,8 @@ public class MobPlugin extends PluginBase implements Listener {
     }
     private void registerCommands() {
         Server.getInstance().getCommandMap().register("", new NpcCommand());
+    }
+    public static boolean isEntityCreationAllowed(Level level) {
+        return !INSTANCE.config.mobCreationDisabledWorlds.contains(level.getName().toLowerCase());
     }
 }

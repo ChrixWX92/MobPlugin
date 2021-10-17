@@ -5,14 +5,14 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
-import nukkitcoders.mobplugin.entities.GSPetData;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
 import nukkitcoders.mobplugin.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Hoglin extends WalkingMonster {
 
@@ -29,7 +29,7 @@ public class Hoglin extends WalkingMonster {
 
     @Override
     public int getKillExperience() {
-        return this.isBaby() ? 0 : Utils.rand(1, 3);
+        return Utils.rand(1, 3);
     }
 
     @Override
@@ -71,8 +71,19 @@ public class Hoglin extends WalkingMonster {
     }
 
     @Override
-    public int getCost() {return GSPetData.petPrices.get(this.getClass().toString().replace(" ", ""));}
+    public Item[] getDrops() {
+        List<Item> drops = new ArrayList<>();
 
-    @Override
-    public Location getSpawnLoc() {return GSPetData.petLocs.get(this.getClass().toString().replace(" ", ""));}
+        if (!this.isBaby()) {
+            for (int i = 0; i < Utils.rand(2, 4); i++) {
+                drops.add(Item.get(this.isOnFire() ? Item.COOKED_PORKCHOP : Item.RAW_PORKCHOP, 0, 1));
+            }
+
+            if (Utils.rand()) {
+                drops.add(Item.get(Item.LEATHER));
+            }
+        }
+
+        return drops.toArray(new Item[0]);
+    }
 }
