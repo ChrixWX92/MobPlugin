@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 public class Config {
 
     final cn.nukkit.utils.Config pluginConfig;
@@ -46,7 +50,7 @@ public class Config {
                 plugin.getServer().getPluginManager().disablePlugin(plugin);
                 return false;
             }
-            
+
             if (current < 16) {
                 pluginConfig.set("spawners.enabled", true);
                 pluginConfig.set("spawners.spawn-range", 4);
@@ -65,21 +69,21 @@ public class Config {
             if (current < 15) {
                 pluginConfig.set("other.check-tamed-entity-attack", true);
             }
-            
+
             if (current < 14) {
                 pluginConfig.set("autospawn.piglin", 0);
             }
-            
+
             if (current < 13) {
                 pluginConfig.set("autospawn.fox", 0);
                 pluginConfig.set("autospawn.panda", 0);
                 pluginConfig.set("autospawn.drowned", 0);
             }
-            
+
             if (current < 12) {
                 pluginConfig.set("other.end-enderman-spawning", 10);
             }
-            
+
             if (current < 11) {
                 pluginConfig.set("other.kill-mobs-on-despawn", false);
             }
@@ -106,6 +110,8 @@ public class Config {
             //plugin.getLogger().notice("Config file updated to version " + ver);
         }
 
+        //entities
+        spawnDelay = pluginConfig.getInt("entities.autospawn-ticks") >> 1; // The task runs double the speed but spawns only either monsters or animals
         spawnDelay = 0;// pluginConfig.getInt("entities.autospawn-ticks") >> 1; TODO: Must be set to however many ticks entities spawn if spontaneous spawning is ever required (recommend 200)
         noXpOrbs = false;//pluginConfig.getBoolean("other.use-no-xp-orbs"); TODO: Want no XP to be gained? Toggle it here.
         noSpawnEggWasting = false;//pluginConfig.getBoolean("other.do-not-waste-spawn-eggs"); TODO: Want infinitely mob-spawning dispensers? Enable this.

@@ -24,8 +24,6 @@ import cn.nukkit.event.server.DataPacketReceiveEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.lang.TranslationContainer;
-import cn.nukkit.level.GameRule;
-import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.math.AxisAlignedBB;
 import cn.nukkit.math.BlockFace;
@@ -65,18 +63,6 @@ import static idk.plugin.npc.NPC.npcEditorsList;
 import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
 
 public class EventListener implements Listener {
-    private final ArrayList<String> entityCreationDisabled = new ArrayList<>();
-
-    public EventListener() {
-        // Adapted from: https://github.com/Nukkit-coders/MobPlugin/blob/8a76ee78cb7d895ed8f3dd4613d785b01b74df27/src/main/java/nukkitcoders/mobplugin/entities/autospawn/AbstractEntitySpawner.java
-        String disabledWorlds = MobPlugin.getInstance().config.pluginConfig.getString("entities.entity-creation-disabled");
-        if (disabledWorlds != null && !disabledWorlds.isEmpty()) {
-            StringTokenizer tokenizer = new StringTokenizer(disabledWorlds, ", ");
-            while (tokenizer.hasMoreTokens()) {
-                entityCreationDisabled.add(tokenizer.nextToken().toLowerCase());
-            }
-        }
-    }
 
     @EventHandler(ignoreCancelled = true)
     public void EntityDeathEvent(EntityDeathEvent ev) {
@@ -90,10 +76,6 @@ public class EventListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void PlayerDeathEvent(PlayerDeathEvent ev) {
         this.handleAttackedEntityAngry(ev.getEntity());
-    }
-
-    private boolean isEntityCreationAllowed(Level level) {
-        return !this.entityCreationDisabled.contains(level.getName().toLowerCase());
     }
 
     private void handleExperienceOrb(Entity entity) {
@@ -227,9 +209,6 @@ public class EventListener implements Listener {
         }
         Player player = ev.getPlayer();
         Item item = ev.getItem();
-        if (!isEntityCreationAllowed(block.getLevel())) {
-            return;
-        }
         if (block.getId() == Block.JACK_O_LANTERN || block.getId() == Block.PUMPKIN) {
             if (block.getSide(BlockFace.DOWN).getId() == Item.SNOW_BLOCK && block.getSide(BlockFace.DOWN, 2).getId() == Item.SNOW_BLOCK) {
 

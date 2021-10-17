@@ -8,6 +8,7 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.entity.Entity;
 import cn.nukkit.entity.item.EntityItem;
 import cn.nukkit.event.Listener;
+import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
@@ -105,7 +106,7 @@ public class MobPlugin extends PluginBase implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("summon")) {
+        if (cmd.getName().equals("summon")) {
             if (args.length == 0 || (args.length == 1 && !(sender instanceof Player))) {
                 return false;
             }
@@ -138,7 +139,7 @@ public class MobPlugin extends PluginBase implements Listener {
             } else {
                 sender.sendMessage("\u00A7cUnknown player " + (args.length == 2 ? args[1] : sender.getName()));
             }
-        } else if (cmd.getName().equalsIgnoreCase("mob")) {
+        } else if (cmd.getName().equals("mob")) {
             if (args.length == 0) {
                 sender.sendMessage("-- MobPlugin " + this.getDescription().getVersion() + " --");
                 sender.sendMessage("/mob spawn <entity> <opt:player> - Summon entity");
@@ -245,6 +246,9 @@ public class MobPlugin extends PluginBase implements Listener {
         Entity.registerEntity(ZombieHorse.class.getSimpleName(), ZombieHorse.class);
         Entity.registerEntity(WanderingTrader.class.getSimpleName(), WanderingTrader.class);
         Entity.registerEntity(Strider.class.getSimpleName(), Strider.class);
+        Entity.registerEntity(GlowSquid.class.getSimpleName(), GlowSquid.class);
+        Entity.registerEntity(Goat.class.getSimpleName(), Goat.class);
+        Entity.registerEntity(Axolotl.class.getSimpleName(), Axolotl.class);
 
         Entity.registerEntity(Blaze.class.getSimpleName(), Blaze.class);
         Entity.registerEntity(Ghast.class.getSimpleName(), Ghast.class);
@@ -304,6 +308,10 @@ public class MobPlugin extends PluginBase implements Listener {
         return time > 13184 && time < 22800;
     }
 
+    public static boolean isSpawningAllowedByLevel(Level level) {
+        return !INSTANCE.config.mobSpawningDisabledWorlds.contains(level.getName().toLowerCase()) && level.getGameRules().getBoolean(GameRule.DO_MOB_SPAWNING);
+    }
+
     public static boolean shouldMobBurn(Level level, BaseEntity entity) {
         int time = level.getTime() % Level.TIME_FULL;
         return !entity.isOnFire() && !level.isRaining() && !entity.isBaby() && (time < 12567 || time > 23450) && !Utils.entityInsideWaterFast(entity) && level.canBlockSeeSky(entity);
@@ -311,6 +319,10 @@ public class MobPlugin extends PluginBase implements Listener {
     private void registerCommands() {
         Server.getInstance().getCommandMap().register("", new NpcCommand());
     }
+    public static boolean isEntityCreationAllowed(Level level) {
+        return !INSTANCE.config.mobCreationDisabledWorlds.contains(level.getName().toLowerCase());
+    }
+
     public static boolean isEntityCreationAllowed(Level level) {
         return !INSTANCE.config.mobCreationDisabledWorlds.contains(level.getName().toLowerCase());
     }
