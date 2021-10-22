@@ -158,7 +158,7 @@ public class Pets extends Command {
         Location loc = GSPetData.petLocs.get(petType);
         int petCost = GSPetData.petPrices.get(petType);
 
-        p.sendMessage(petType);
+        p.sendMessage(TextFormat.GREEN + "Congratulations on your new " + petType + " - " + );
 
         switch(petType){
             case "Bat":

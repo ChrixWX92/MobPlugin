@@ -319,9 +319,6 @@ public class MobPlugin extends PluginBase implements Listener {
     private void registerCommands() {
         Server.getInstance().getCommandMap().register("", new NpcCommand());
     }
-    public static boolean isEntityCreationAllowed(Level level) {
-        return !INSTANCE.config.mobCreationDisabledWorlds.contains(level.getName().toLowerCase());
-    }
 
     public static boolean isEntityCreationAllowed(Level level) {
         return !INSTANCE.config.mobCreationDisabledWorlds.contains(level.getName().toLowerCase());
