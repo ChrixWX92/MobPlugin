@@ -1,5 +1,6 @@
 package nukkitcoders.mobplugin.entities.animal.walking;
 
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.animal.WalkingAnimal;
@@ -39,6 +40,16 @@ public class Goat extends WalkingAnimal {
     @Override
     public int getKillExperience() {
         return Utils.rand(1, 3);
+    }
+
+    @Override
+    public int getCost() {
+        return 0;
+    }
+
+    @Override
+    public Location getSpawnLoc() {
+        return null;
     }
 
     @Override

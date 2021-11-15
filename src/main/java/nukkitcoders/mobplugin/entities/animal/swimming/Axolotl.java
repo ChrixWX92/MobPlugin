@@ -1,5 +1,6 @@
 package nukkitcoders.mobplugin.entities.animal.swimming;
 
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 
@@ -9,6 +10,16 @@ public class Axolotl extends Fish {
 
     public Axolotl(FullChunk chunk, CompoundTag nbt) {
         super(chunk, nbt);
+    }
+
+    @Override
+    public int getCost() {
+        return 0;
+    }
+
+    @Override
+    public Location getSpawnLoc() {
+        return null;
     }
 
     @Override

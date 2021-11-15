@@ -1,1 +1,95 @@
-# Information removed - no configuration tweaks necessary
+# Config version, do not edit!
+config-version: 16
+
+entities:
+  # How often the spawn task should run
+  # In ticks, 20 ticks = 0 second
+  # Use 0 to disable entity spawning
+  autospawn-ticks: 0
+  # How often the despawn task should run
+  # In ticks, 20 ticks = 1 second
+  # Use 0 to disable entity despawning
+  despawn-ticks: 0
+  # Do not spawn entities in these worlds
+  worlds-spawning-disabled: "exampleworld1, exampleworld2"
+
+# Spawning limit settings
+# Per player, in 100 blocks range
+autospawn:
+  bat: 0
+  blaze: 0
+  chicken: 2
+  cod: 2
+  cow: 2
+  creeper: 2
+  dolphin: 1
+  donkey: 1
+  enderman: 1
+  ghast: 2
+  husk: 2
+  horse: 2
+  magmacube: 2
+  mooshroom: 2
+  ocelot: 2
+  parrot: 1
+  pig: 2
+  polarbear: 2
+  pufferfish: 1
+  rabbit: 1
+  salmon: 3
+  sheep: 2
+  skeleton: 2
+  slime: 2
+  spider: 2
+  squid: 2
+  stray: 2
+  tropicalfish: 2
+  turtle: 2
+  witch: 1
+  witherskeleton: 2
+  wolf: 2
+  zombie: 2
+  zombiepigman: 3
+  fox: 2
+  panda: 1
+  drowned: 2
+  piglin: 2
+  hoglin: 2
+
+spawners:
+  # Enable mob spawner blocks
+  enabled: true
+  # Mob spawner spawning range
+  spawn-range: 4
+  # Minimum amount of mobs spawned at a time
+  minimum-spawn-count: 1
+  # Maximum amount of mobs spawned at a time
+  maximum-spawn-count: 4
+  # Minimum spawn delay (ticks)
+  minimum-delay: 200
+  # Maximum spawn delay (ticks)
+  maximum-delay: 5000
+  # Maximum amount of mobs near the spawner
+  maximum-nearby-entities: 16
+  # Player must be this close to spawner for it to spawn mobs
+  required-player-range: 16
+  # Don't reduce spawn eggs if there is an entity already in the spawner (non-vanilla behavior)
+  do-not-waste-spawn-eggs: false
+
+other:
+  # Give xp drops straight to player
+  use-no-xp-orbs: false
+  # Do not spawn mobs this near to spawn area
+  # Set -1 to disable
+  spawn-no-spawning-area: -1
+  # Kill entities instead of despawning them
+  # This can have a negative impact on performance due to the drops
+  kill-mobs-on-despawn: false
+  # Custom enderman max spawns rule for the_end world
+  end-enderman-spawning: 10
+  # If tamed entity owner attacked or attack entity, it will become angry
+  check-tamed-entity-attack: true
+  # Let creepers explode blocks
+  creeper-explode-blocks: false
+  # Do not allow creating snow golems, iron golems and withers in these worlds
+  worlds-entity-creation-disabled: "exampleworld1, exampleworld2"

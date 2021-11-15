@@ -5,6 +5,7 @@ import cn.nukkit.entity.Entity;
 import cn.nukkit.event.entity.EntityDamageByEntityEvent;
 import cn.nukkit.event.entity.EntityDamageEvent;
 import cn.nukkit.item.Item;
+import cn.nukkit.level.Location;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.nbt.tag.CompoundTag;
 import nukkitcoders.mobplugin.entities.monster.WalkingMonster;
@@ -30,6 +31,16 @@ public class Hoglin extends WalkingMonster {
     @Override
     public int getKillExperience() {
         return Utils.rand(1, 3);
+    }
+
+    @Override
+    public int getCost() {
+        return 0;
+    }
+
+    @Override
+    public Location getSpawnLoc() {
+        return null;
     }
 
     @Override

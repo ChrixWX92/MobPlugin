@@ -15,6 +15,7 @@ import com.denzelcode.form.event.SimpleFormButtonClickEvent;
 import com.denzelcode.form.window.CustomWindowForm;
 import com.denzelcode.form.window.ModalWindowForm;
 import com.denzelcode.form.window.SimpleWindowForm;
+import com.gms.mc.error.InvalidFrameWriteException;
 
 public class NewFormListener implements Listener {
 
@@ -39,7 +40,7 @@ public class NewFormListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onPetNameSubmit(CustomFormSubmitEvent event) {
+    public void onPetNameSubmit(CustomFormSubmitEvent event) throws InvalidFrameWriteException {
 
         CustomWindowForm form = event.getForm();
         Player p = event.getPlayer();
