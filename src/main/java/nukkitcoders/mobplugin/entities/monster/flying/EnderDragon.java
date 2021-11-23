@@ -63,16 +63,18 @@ public class EnderDragon extends FlyingMonster implements Boss {
 
     @Override
     public boolean targetOption(EntityCreature creature, double distance) {
+        return false; /*
         if (creature instanceof Player) {
             Player player = (Player) creature;
             return player.spawned && player.isAlive() && !player.closed && (player.isSurvival() || player.isAdventure()) && distance <= 800 && distance > 50;
         }
-        return creature.isAlive() && !creature.closed && distance <= 800 && distance > 50;
+        return creature.isAlive() && !creature.closed && distance <= 800 && distance > 50;*/
     }
 
     @Override
     public void attackEntity(Entity player) {
-        if (this.attackDelay > 60 && Utils.rand(1, 5) < 3 && this.distanceSquared(player) <= 90000) {
+        return;
+        /*if (this.attackDelay > 60 && Utils.rand(1, 5) < 3 && this.distanceSquared(player) <= 90000) {
             this.attackDelay = 0;
             double f = 1.1;
             double yaw = this.yaw + Utils.rand(-12.0, 12.0);
@@ -91,7 +93,7 @@ public class EnderDragon extends FlyingMonster implements Boss {
             } else {
                 charge.spawnToAll();
             }
-        }
+        }*/
     }
 
     @Override

@@ -80,7 +80,8 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public void explode() {
-        if (this.closed) return;
+        return;
+        /*if (this.closed) return;
 
         EntityExplosionPrimeEvent ev = new EntityExplosionPrimeEvent(this, this.isPowered() ? 6 : 3);
 
@@ -101,7 +102,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             this.level.addParticle(new HugeExplodeSeedParticle(this));
         }
 
-        this.close();
+        this.close();*/
     }
 
     public void attackEntity(Entity player) {
@@ -182,6 +183,8 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
 
     @Override
     public boolean entityBaseTick(int tickDiff) {
+        return false;
+        /*
         if (getServer().getDifficulty() == 0) {
             this.close();
             return true;
@@ -224,7 +227,7 @@ public class Creeper extends WalkingMonster implements EntityExplosive {
             }
         }
 
-        return hasUpdate;
+        return hasUpdate;*/
     }
 
     @Override

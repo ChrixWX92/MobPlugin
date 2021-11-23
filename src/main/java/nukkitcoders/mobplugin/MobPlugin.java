@@ -323,7 +323,4 @@ public class MobPlugin extends PluginBase implements Listener {
         return !INSTANCE.config.mobCreationDisabledWorlds.contains(level.getName().toLowerCase());
     }
 
-    public static boolean isEntityCreationAllowed(Level level) {
-        return !INSTANCE.config.mobCreationDisabledWorlds.contains(level.getName().toLowerCase());
-    }
 }

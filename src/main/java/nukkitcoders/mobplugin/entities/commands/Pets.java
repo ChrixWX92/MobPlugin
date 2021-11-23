@@ -20,12 +20,16 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.nbt.tag.DoubleTag;
 import cn.nukkit.nbt.tag.FloatTag;
 import cn.nukkit.nbt.tag.ListTag;
+import cn.nukkit.scheduler.PluginTask;
 import cn.nukkit.utils.TextFormat;
 import com.denzelcode.form.FormAPI;
 import com.denzelcode.form.event.ModalFormSubmitEvent;
+import com.gms.mc.Main;
 import com.gms.mc.PlayerInstance;
 import com.gms.mc.custom.particles.ParticleFX;
 import com.gms.mc.custom.particles.ParticleFXSequence;
+import com.gms.mc.custom.particles.tasks.EDH;
+import com.gms.mc.custom.particles.tasks.EnderDragonHatch;
 import com.gms.mc.custom.sound.*;
 import com.gms.mc.data.ChildProfile;
 import com.gms.mc.error.InvalidFrameWriteException;
@@ -88,7 +92,7 @@ public class Pets extends Command {
     public Player p;
     private static ChildProfile profile;
     private static String chosenPet = "";
-    private static BlockEntityItemFrame anchor;
+    private static BlockEntitySign anchor;
 
     @Override
     public boolean execute(CommandSender sender, String s, String[] args) {
@@ -182,11 +186,11 @@ public class Pets extends Command {
         Location loc = GSPetData.petLocs.get(petType);
         int petCost = GSPetData.petPrices.get(petType);
 
-<<<<<<< Updated upstream
-        p.sendMessage(petType);
-=======
-        p.sendMessage(TextFormat.GREEN + "Congratulations on your new " + petType + " - " + TextFormat.LIGHT_PURPLE + name + TextFormat.GREEN + "!");
->>>>>>> Stashed changes
+        if (name.length() > 0) {
+            p.sendMessage(TextFormat.GREEN + "Congratulations on your new " + petType + " - " + TextFormat.LIGHT_PURPLE + name + TextFormat.GREEN + "!");
+        } else {
+            p.sendMessage(TextFormat.GREEN + "Congratulations on your new " + petType + "!");
+        }
 
         switch(petType){
             case "Bat":
@@ -356,7 +360,11 @@ public class Pets extends Command {
         getProfile().spendTickets(petCost);
 
         findPetFrame(p,petType,true);
-        dragonCheck(p);
+        try {
+            dragonCheck(p);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -423,17 +431,18 @@ public class Pets extends Command {
                         iF.setItem(map);
                         iF.getLevel().addParticleEffect(new Vector3(iF.add(0.5).x, iF.add(0,0.5).y, iF.add(0,0,0.5).z),CAMERA_SHOOT_EXPLOSION);
                     }
-                }
-                if (chunkEntry.getValue() instanceof BlockEntitySign) {
-                    if (((BlockEntitySign) chunkEntry.getValue()).getText()[0].equals("ANCHOR")) {
-                        setAnchor((BlockEntityItemFrame) chunkEntry.getValue());
+                } else {
+                    if (chunkEntry.getValue() instanceof BlockEntitySign) {
+                        if (((BlockEntitySign) chunkEntry.getValue()).getText()[0].equals("ANCHOR")) {
+                            setAnchor((BlockEntitySign) chunkEntry.getValue());
+                        }
                     }
                 }
             }
         }
     }
 
-    public static void dragonCheck(Player player) {
+    public static void dragonCheck(Player player) throws InterruptedException {
 
         int petCount = 0;
         Level level = player.getLevel();
@@ -442,6 +451,7 @@ public class Pets extends Command {
 
         for (String pet : petList) {
             for (Map.Entry<Long, ? extends FullChunk> entry : chunksMap.entrySet()) {
+                for (Entity e : entry.getValue().getEntities().values()) {if (e instanceof EnderDragon) {return;}}
                 entMap = entry.getValue().getBlockEntities();
                 for (Map.Entry<Long, BlockEntity> chunkEntry : entMap.entrySet()) {
                     if (chunkEntry.getValue().namedTag.contains(pet)) {
@@ -461,13 +471,43 @@ public class Pets extends Command {
         }
     }
 
-    public static void dragonSummon(Player p) {
+    public static void dragonSummon(Player p) throws InterruptedException {
+
+        /*EDH edhQueue = new EDH();
+        edhQueue.queue(new EnderDragonHatch(p, getAnchor().getLocation()).runTaskTimer(Main.s_plugin, 0, 500));
+        edhQueue.queue(new EnderDragonHatch(p, getAnchor().getLocation()).runTaskTimer(Main.s_plugin, 0, 500));
+        edhQueue.queue(new EnderDragonHatch(p, getAnchor().getLocation()).runTaskTimer(Main.s_plugin, 0, 500));
+        edhQueue.run();*/ //TODO: Scheduling
 
         MusicMaker.playSFX(SFX.Type.DRAGON_SPAWN, p);
-        ParticleFXSequence pFX = new ParticleFXSequence(ParticleFX.DRAGON_SPAWN, p.getLevel(), ((BaseEntity) getPet()).getLocation());
-        synchronized (pFX) {
-            pFX.run();
+        for (int i = 0 ; i < 3 ; i++) {
+            Runnable edh = new EnderDragonHatch(p, getAnchor().getLocation()).runTaskTimer(Main.s_plugin, 0, 500);
+            synchronized (edh) {
+                edh.run();
+            }
         }
+        //for (int i = 0 ; i < 3 ; i++) {
+
+            ParticleFXSequence pFX = new ParticleFXSequence(ParticleFX.DRAGON_SPAWN, p.getLevel(), getAnchor().getLocation().add(0, 3));
+            //for(int i = 0 ; i < 4 ; i++) {
+            //ParticleFXSequence pFX = new ParticleFXSequence(ParticleFX.DRAGON_SPAWN, p.getLevel(), getAnchor().getLocation().add(i, 3));
+            ParticleFXSequence pFX2 = new ParticleFXSequence(ParticleFX.DRAGON_SPAWN, p.getLevel(), getAnchor().getLocation().add(0, 3, 3));
+            ParticleFXSequence pFX3 = new ParticleFXSequence(ParticleFX.DRAGON_SPAWN, p.getLevel(), getAnchor().getLocation().add(-3, 3));
+            ParticleFXSequence pFX4 = new ParticleFXSequence(ParticleFX.DRAGON_SPAWN, p.getLevel(), getAnchor().getLocation().add(0, 3, -3));
+            synchronized (pFX) {
+                pFX.run();
+            }
+        //}
+            synchronized (pFX2) {
+                pFX2.run();
+            }
+            synchronized (pFX3) {
+                pFX3.run();
+            }
+            synchronized (pFX4) {
+                pFX4.run();
+            }
+       //}
 
         Block testBlock;
 
@@ -482,7 +522,7 @@ public class Pets extends Command {
             for (int y = startY; y < endY; y++) {
                 for (int x = startX; x < endX; x++) {
                     testBlock = p.getLevel().getBlock(new Location (x,y,z));
-                    if (testBlock.getId() == 173 || testBlock.getId() == 49 || (testBlock.getId() == 241 && testBlock.getDamage() == 1)) {
+                    if (testBlock.getId() == 173 || testBlock.getId() == 49 || (testBlock.getId() == 241 && testBlock.getDamage() == 10)) {
                         p.getLevel().setBlock(new Location (x, y, z), new BlockAir());
                     }
                 }
@@ -519,11 +559,11 @@ public class Pets extends Command {
         Pets.profile = profile;
     }
 
-    public static BlockEntityItemFrame getAnchor() {
+    public static BlockEntitySign getAnchor() {
         return anchor;
     }
 
-    public static void setAnchor(BlockEntityItemFrame anchor) {
+    public static void setAnchor(BlockEntitySign anchor) {
         Pets.anchor = anchor;
     }
 
