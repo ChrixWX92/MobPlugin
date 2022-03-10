@@ -1,7 +1,6 @@
 package nukkitcoders.mobplugin;
 
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -12,7 +11,6 @@ import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
-import idk.plugin.npc.commands.NpcCommand;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
 import nukkitcoders.mobplugin.entities.animal.flying.Bee;
@@ -73,7 +71,6 @@ public class MobPlugin extends PluginBase implements Listener {
 
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
         this.registerEntities();
-        this.registerCommands();
 
         if (config.spawnDelay > 0) {
             this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this, config.pluginConfig), config.spawnDelay, config.spawnDelay);
@@ -301,9 +298,7 @@ public class MobPlugin extends PluginBase implements Listener {
         int time = level.getTime() % Level.TIME_FULL;
         return !entity.isOnFire() && !level.isRaining() && !entity.isBaby() && (time < 12567 || time > 23450) && !Utils.entityInsideWaterFast(entity) && level.canBlockSeeSky(entity);
     }
-    private void registerCommands() {
-        Server.getInstance().getCommandMap().register("", new NpcCommand());
-    }
+
     public static boolean isEntityCreationAllowed(Level level) {
         return !INSTANCE.config.mobCreationDisabledWorlds.contains(level.getName().toLowerCase());
     }
