@@ -12,14 +12,7 @@ import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.plugin.PluginManager;
-import com.gms.mc.custom.items.GiveRHOnJoin;
-import com.gms.mc.custom.items.NoDrop;
-import com.gms.mc.custom.items.RHListener;
-import com.gms.mc.events.PlayerEvent;
-import com.gms.mc.events.PlayerInteract;
-import com.gms.mc.events.TicketsHUD;
-import com.gms.mc.items.ItemsToSell;
+import idk.plugin.npc.commands.NpcCommand;
 import nukkitcoders.mobplugin.entities.BaseEntity;
 import nukkitcoders.mobplugin.entities.animal.flying.Bat;
 import nukkitcoders.mobplugin.entities.animal.flying.Bee;
@@ -28,8 +21,6 @@ import nukkitcoders.mobplugin.entities.animal.jumping.Rabbit;
 import nukkitcoders.mobplugin.entities.animal.swimming.*;
 import nukkitcoders.mobplugin.entities.animal.walking.*;
 import nukkitcoders.mobplugin.entities.block.BlockEntitySpawner;
-import nukkitcoders.mobplugin.entities.commands.NewFormListener;
-import nukkitcoders.mobplugin.entities.commands.Pets;
 import nukkitcoders.mobplugin.entities.monster.flying.*;
 import nukkitcoders.mobplugin.entities.monster.jumping.MagmaCube;
 import nukkitcoders.mobplugin.entities.monster.jumping.Slime;
@@ -38,8 +29,6 @@ import nukkitcoders.mobplugin.entities.monster.swimming.Guardian;
 import nukkitcoders.mobplugin.entities.monster.walking.*;
 import nukkitcoders.mobplugin.entities.projectile.*;
 import nukkitcoders.mobplugin.utils.Utils;
-
-import idk.plugin.npc.commands.NpcCommand;
 
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz (kniffo80)</a>
@@ -85,10 +74,6 @@ public class MobPlugin extends PluginBase implements Listener {
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
         this.registerEntities();
         this.registerCommands();
-        // Registering form listeners:
-        getServer().getPluginManager().registerEvents(new NewFormListener(), this);
-
-        getServer().getCommandMap().register("talk", new Pets());
 
         if (config.spawnDelay > 0) {
             this.getServer().getScheduler().scheduleDelayedRepeatingTask(this, new AutoSpawnTask(this, config.pluginConfig), config.spawnDelay, config.spawnDelay);
