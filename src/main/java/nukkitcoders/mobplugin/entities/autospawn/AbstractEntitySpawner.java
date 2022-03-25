@@ -2,31 +2,11 @@ package nukkitcoders.mobplugin.entities.autospawn;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.block.Block;
-import cn.nukkit.blockentity.BlockEntity;
-import cn.nukkit.entity.Entity;
-import cn.nukkit.level.GameRule;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
-import cn.nukkit.nbt.tag.CompoundTag;
-import cn.nukkit.nbt.tag.DoubleTag;
-import cn.nukkit.nbt.tag.FloatTag;
-import cn.nukkit.nbt.tag.ListTag;
 import nukkitcoders.mobplugin.AutoSpawnTask;
 import nukkitcoders.mobplugin.MobPlugin;
-import nukkitcoders.mobplugin.entities.animal.swimming.Dolphin;
-import nukkitcoders.mobplugin.entities.block.BlockEntitySpawner;
-import nukkitcoders.mobplugin.entities.commands.Pets;
-import nukkitcoders.mobplugin.entities.monster.Monster;
-import nukkitcoders.mobplugin.entities.spawners.DolphinSpawner;
-import nukkitcoders.mobplugin.event.spawner.SpawnerCreateEvent;
 import nukkitcoders.mobplugin.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import static nukkitcoders.mobplugin.entities.block.BlockEntitySpawner.*;
 
 /**
  * @author <a href="mailto:kniffman@googlemail.com">Michael Gertz</a>
