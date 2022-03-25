@@ -31,7 +31,7 @@ public class GSPetData {
         petLocs.put("Pig", new Location(186,44,-192));
         petLocs.put("Polar Bear", new Location(124,33,-76));
         petLocs.put("Pufferfish", new Location(-3,44,-169));
-        petLocs.put("Rabbit", new Location(110,44,-102));
+        petLocs.put("Rabbit", new Location(115, 44,-91));
         petLocs.put("Salmon", new Location(-16,44,-171));
         petLocs.put("Sheep", new Location(180,44,-172));
         petLocs.put("Skeleton", new Location(88,28,-128));
